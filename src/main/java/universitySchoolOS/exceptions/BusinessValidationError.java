@@ -1,4 +1,4 @@
-package universitySchoolOS.exceptionsHandler;
+package universitySchoolOS.exceptions;
 
 import lombok.Data;
 
