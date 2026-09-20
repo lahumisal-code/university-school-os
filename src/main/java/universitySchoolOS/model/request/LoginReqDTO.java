@@ -6,17 +6,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import universitySchoolOS.exceptions.FieldErrorMessages;
+import universitySchoolOS.validationInterfacce.FormatValidation;
+import universitySchoolOS.validationInterfacce.MandatoryValidation;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginReqDTO {
 
-    @NotBlank(message = FieldErrorMessages.USERNAME_NOT_BLANK)
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = FieldErrorMessages.INVALID_FIELD)
+    @NotBlank(message = FieldErrorMessages.USERNAME_NOT_BLANK, groups = MandatoryValidation.class)
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+            message = FieldErrorMessages.INVALID_FIELD,
+            groups = FormatValidation.class
+    )
     private String username;
 
-    @NotBlank(message = FieldErrorMessages.PASSWORD_NOT_BLANK)
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = FieldErrorMessages.INVALID_FIELD)
+    @NotBlank(message = FieldErrorMessages.PASSWORD_NOT_BLANK, groups = MandatoryValidation.class)
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = FieldErrorMessages.INVALID_FIELD,
+            groups = FormatValidation.class
+    )
     private String password;
 }

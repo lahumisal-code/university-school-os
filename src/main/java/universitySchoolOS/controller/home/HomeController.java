@@ -10,6 +10,7 @@ import universitySchoolOS.model.request.LoginReqDTO;
 import universitySchoolOS.model.request.RegisterUserDTO;
 import universitySchoolOS.model.response.LoginResponse;
 import universitySchoolOS.service.UserService;
+import universitySchoolOS.validationInterfacce.LoginValidationSequence;
 
 @RestController
 @RequestMapping("/v1/api/auth")
@@ -29,7 +30,7 @@ public class HomeController {
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@Valid @RequestBody LoginReqDTO loginReqDTO) {
+    public LoginResponse login(@Validated(LoginValidationSequence.class) @RequestBody LoginReqDTO loginReqDTO) {
         LoginResponse loginResponse = userService.verifyUser(loginReqDTO);
 
         return loginResponse;

@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex) {
 
-        FieldError fieldError = ex.getBindingResult().getFieldErrors().getFirst();
+        FieldError fieldError = ex.getBindingResult().getFieldErrors().get(0);
 
         ValidationError validationError = CONSTANTS_ERROR_MAP.get(fieldError.getCode());
 
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
                 validationError.getErrorStatus(),
                 validationError.getErrorCode(),
                 validationError.getErrorType().toString(),
-                validationError.getErrorMessage()
+                fieldError.getDefaultMessage()
         );
 
         return ResponseEntity.status(validationError.getErrorStatus()).body(response);
