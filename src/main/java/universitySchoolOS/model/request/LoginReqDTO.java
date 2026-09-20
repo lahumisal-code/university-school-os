@@ -13,10 +13,10 @@ import universitySchoolOS.exceptions.FieldErrorMessages;
 public class LoginReqDTO {
 
     @NotBlank(message = FieldErrorMessages.USERNAME_NOT_BLANK)
-    @Pattern(regexp = "^[a-zA-Z0-9_]{3,20}$", message = FieldErrorMessages.USERNAME_NOT_BLANK)
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = FieldErrorMessages.INVALID_FIELD)
     private String username;
 
     @NotBlank(message = FieldErrorMessages.PASSWORD_NOT_BLANK)
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = FieldErrorMessages.PASSWORD_NOT_BLANK)
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = FieldErrorMessages.INVALID_FIELD)
     private String password;
 }
