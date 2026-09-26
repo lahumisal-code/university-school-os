@@ -16,14 +16,14 @@ public class LoginReqDTO {
 
     @NotBlank(message = FieldErrorMessages.USERNAME_NOT_BLANK, groups = MandatoryValidation.class)
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-            message = FieldErrorMessages.INVALID_FIELD,
+            message = FieldErrorMessages.USERNAME_INVALID,
             groups = FormatValidation.class
     )
     private String username;
 
     @NotBlank(message = FieldErrorMessages.PASSWORD_NOT_BLANK, groups = MandatoryValidation.class)
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-            message = FieldErrorMessages.INVALID_FIELD,
+            message = FieldErrorMessages.PASSWORD_INVALID,
             groups = FormatValidation.class
     )
     private String password;
