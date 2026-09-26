@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import universitySchoolOS.model.enums.Roles;
-import universitySchoolOS.model.enums.UserType;
 import java.sql.Timestamp;
 
 @Entity
@@ -23,10 +21,6 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "user_type", nullable = false)
-    private UserType userType;
-
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -40,12 +34,11 @@ public class Users {
     @JsonIgnore
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "roles", nullable = false)
-    private Roles role;
-
     @Column(name = "contact_number", nullable = false)
     private String contactNumber;
+
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive;
 
     @JsonIgnore
     @CreationTimestamp

@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import universitySchoolOS.AppConstatnt.AppConstant;
+import universitySchoolOS.model.UserRolePermissions;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;

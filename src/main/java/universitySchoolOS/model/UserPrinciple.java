@@ -6,21 +6,37 @@ import org.springframework.security.core.userdetails.UserDetails;
 import universitySchoolOS.model.enums.Roles;
 import universitySchoolOS.model.enums.UserType;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class UserPrinciple implements UserDetails {
 
     private Users users;
+    private final UserRolePermissions rolePermissions;
 
-    public UserPrinciple(Users users) {
+
+    public UserPrinciple(Users users, UserRolePermissions rolePermissions) {
         this.users = users;
+        this.rolePermissions = rolePermissions;
     }
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public UserRolePermissions getRolePermissions() {
+        return rolePermissions;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(users.getRole().name()));
-
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(rolePermissions.getRoles()));
+        authorities.add(new SimpleGrantedAuthority(rolePermissions.getUserType()));
+        authorities.add(new SimpleGrantedAuthority(rolePermissions.getPermissionIdList().toString()));
+        return authorities;
     }
 
     @Override

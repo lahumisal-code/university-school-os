@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import universitySchoolOS.model.UserRolePermissions;
 import universitySchoolOS.model.Users;
 import universitySchoolOS.model.enums.Roles;
 import universitySchoolOS.model.enums.UserType;
@@ -15,7 +16,10 @@ import universitySchoolOS.model.request.LoginReqDTO;
 import universitySchoolOS.model.request.RegisterUserDTO;
 import universitySchoolOS.model.response.LoginResponse;
 import universitySchoolOS.repository.UserRepo;
+import universitySchoolOS.repository.UserRolePermissionRepo;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -24,20 +28,22 @@ public class UserService {
 
     private final UserRepo userRepo;
     private final JwtService jwtService;
+    private final UserRolePermissionRepo userRolePermissionRepo;
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepo userRepo, JwtService jwtService, AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepo userRepo, UserRolePermissionRepo userRolePermissionRepo, JwtService jwtService, AuthenticationManager authenticationManager, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepo = userRepo;
         this.jwtService = jwtService;
+        this.userRolePermissionRepo = userRolePermissionRepo;
         this.authenticationManager = authenticationManager;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public String registerUser(@RequestBody RegisterUserDTO registerUserDTO) {
         Users user = new Users();
-        user.setRole(Roles.STUDENT);
-        user.setUserType(UserType.COLLEGE);
+//        user.setRole(Roles.STUDENT);
+//        user.setUserType(UserType.COLLEGE);
         user.setFirstName(registerUserDTO.getFirstName());
         user.setLastName(registerUserDTO.getLastName());
         user.setEmail(registerUserDTO.getEmail());
@@ -51,27 +57,44 @@ public class UserService {
         log.info("verifying the user");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginReqDTO.getUsername(), loginReqDTO.getPassword()));
         if(authentication.isAuthenticated()){
-            log.info("Authentication result: {}", authentication.getPrincipal());
-            
-            // Get user from database to retrieve full user details
-            Users dbUser = userRepo.findByEmail(loginReqDTO.getUsername());
-            
-            // Generate JWT token
-            String token = jwtService.generateToken(dbUser.getEmail());
-            
-            // Create and return login response with username, password, and token
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setFirstName(dbUser.getFirstName());
-            loginResponse.setLastName(dbUser.getLastName());
-            loginResponse.setEmail(dbUser.getEmail());
-            loginResponse.setUserType(dbUser.getUserType());
-            loginResponse.setRole(dbUser.getRole());
-            loginResponse.setToken(token);
-//            loginResponse.setPassword(dbUser.getPassword()); // Hashed password from database
 
-            return loginResponse;
+            Users dbUser = getActiveUser(loginReqDTO.getUsername());
+            UserRolePermissions rolePermissions = getRolePermissions(dbUser.getUserId());
+            
+            String token = jwtService.generateToken(dbUser.getEmail());
+            return buildLoginResponse(dbUser, rolePermissions, token);
         }
         return null; // Return null if authentication fails
+    }
+
+    private Users getActiveUser(String email) {
+        Users dbUser = userRepo.findByEmail(email);
+        if (dbUser == null) {
+            log.warn("No user found for email: {}", email);
+            throw new RuntimeException("No user found with email: " + email);
+        }
+        if (!dbUser.isActive()) {
+            log.warn("User account not active: {}", email);
+            throw new RuntimeException("User account is not active");
+        }
+        return dbUser;
+    }
+
+    private UserRolePermissions getRolePermissions(Long userId) {
+        return userRolePermissionRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("No role/permissions configured for user id: " + userId));
+    }
+
+    private LoginResponse buildLoginResponse(Users dbUser, UserRolePermissions rolePermissions, String token) {
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setFirstName(dbUser.getFirstName());
+        loginResponse.setLastName(dbUser.getLastName());
+        loginResponse.setEmail(dbUser.getEmail());
+        loginResponse.setAllowedPermissions(rolePermissions.getPermissionIdList());
+        loginResponse.setRole(rolePermissions.getRoles());
+        loginResponse.setUserType(rolePermissions.getUserType());
+        loginResponse.setToken(token);
+        return loginResponse;
     }
 
 }
