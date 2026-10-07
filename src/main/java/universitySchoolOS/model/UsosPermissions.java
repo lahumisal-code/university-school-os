@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Table(name = "usos_permissions")
-public class permissions {
+public class UsosPermissions  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
