@@ -11,12 +11,6 @@ import universitySchoolOS.model.UserRolePermissions;
 import universitySchoolOS.model.Users;
 import universitySchoolOS.repository.UserRepo;
 import universitySchoolOS.repository.UserRolePermissionRepo;
-//import universitySchoolOS.repository.UserRolePermissionRepo;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 
 @Slf4j
 @Service
