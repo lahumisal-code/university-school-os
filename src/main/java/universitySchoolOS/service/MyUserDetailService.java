@@ -1,6 +1,7 @@
 package universitySchoolOS.service;
 
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,14 +15,11 @@ import universitySchoolOS.repository.UserRolePermissionRepo;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MyUserDetailService implements UserDetailsService {
 
     private final UserRepo userRepo;
     private final UserRolePermissionRepo rolePermissionRepo;
-    public MyUserDetailService(UserRepo repo, UserRolePermissionRepo  rolePermissionRepo) {
-        this.userRepo = repo;
-        this.rolePermissionRepo = rolePermissionRepo;
-    }
 
     @Override
     @NonNull
@@ -35,17 +33,8 @@ public class MyUserDetailService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "No role/permissions configured for user: " + username));
 
-//        List<String> permissionNames = resolvePermissionNames(rolePermissions.getPermissionIdList());
-
         return new UserPrinciple(user, rolePermissions);
 
     }
-
-//    private List<String> resolvePermissionNames(List<Long> permissionIds) {
-//        if (permissionIds == null || permissionIds.isEmpty()) {
-//            return Collections.emptyList();
-//        }
-//        return rolePermissionRepo.findPermissionNamesByIds(permissionIds);
-//    }
 
 }
