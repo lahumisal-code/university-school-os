@@ -1,7 +1,6 @@
 package universitySchoolOS.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,17 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import universitySchoolOS.model.UserRolePermissions;
 import universitySchoolOS.model.Users;
-import universitySchoolOS.model.enums.Roles;
-import universitySchoolOS.model.enums.UserType;
 import universitySchoolOS.model.request.LoginReqDTO;
 import universitySchoolOS.model.request.RegisterUserDTO;
 import universitySchoolOS.model.response.LoginResponse;
 import universitySchoolOS.repository.UserRepo;
 import universitySchoolOS.repository.UserRolePermissionRepo;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
