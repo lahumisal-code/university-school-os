@@ -1,6 +1,7 @@
 package universitySchoolOS.database;
 
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import lombok.extern.slf4j.Slf4j;
@@ -8,13 +9,10 @@ import javax.sql.DataSource;
 
 @Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class DatabaseConfig {
 
     private final DatabaseProperties databaseProperties;
-
-    public DatabaseConfig(DatabaseProperties databaseProperties) {
-        this.databaseProperties = databaseProperties;
-    }
 
     @Bean
     public DataSource dataSource() {
