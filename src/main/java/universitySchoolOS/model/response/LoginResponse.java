@@ -3,7 +3,7 @@ package universitySchoolOS.model.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import universitySchoolOS.model.request.PermissionDTO;
 import java.util.List;
 
 @Data
@@ -16,6 +16,6 @@ public class LoginResponse {
     private String role;
     private String userType;
     private String token;
-    private List<Long> allowedPermissions;
+    private List<PermissionDTO> allowedPermissions;
 }
 

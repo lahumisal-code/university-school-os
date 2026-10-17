@@ -16,6 +16,7 @@ public enum ValidationError {
     USERNAME_INVALID(422, "IEF101",FieldErrorMessages.USERNAME_INVALID,ErrorTypes.field_error),
     PASSWORD_INVALID(422,"IEF102",FieldErrorMessages.PASSWORD_INVALID,ErrorTypes.field_error),
     INVALID_FIELD(422,"IEF103",FieldErrorMessages.INVALID_FIELD, ErrorTypes.field_error);
+
     public final Integer errorStatus;
     public final String errorCode;
     public final String errorMessage;

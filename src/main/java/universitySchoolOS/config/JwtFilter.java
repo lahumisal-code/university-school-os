@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,16 +19,12 @@ import java.io.IOException;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    // this is notting but autowired (constructor dependency)
+    // this is notting but autowired (constructor dependency) via RequiredArgsConstructor
     private final JwtService jwtService;
     private final  ApplicationContext context;
-
-    private JwtFilter(JwtService jwtService, ApplicationContext context) {
-        this.jwtService = jwtService;
-        this.context = context;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

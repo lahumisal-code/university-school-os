@@ -1,5 +1,6 @@
 package universitySchoolOS.controller.home;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +12,10 @@ import universitySchoolOS.validationInterfacce.LoginValidationSequence;
 
 @RestController
 @RequestMapping("/v1/api/auth")
+@RequiredArgsConstructor
 public class HomeController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping
     public String auth() {

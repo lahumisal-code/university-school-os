@@ -1,6 +1,7 @@
 package universitySchoolOS.config;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,17 +22,12 @@ import universitySchoolOS.AppConstatnt.AppConstant;
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
     private final JwtLogoutHandler jwtLogoutHandler;
-
-    public SecurityConfig(UserDetailsService userDetailsService, JwtFilter jwtFilter, JwtLogoutHandler jwtLogoutHandler) {
-        this.userDetailsService = userDetailsService;
-        this.jwtFilter = jwtFilter;
-        this.jwtLogoutHandler = jwtLogoutHandler;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

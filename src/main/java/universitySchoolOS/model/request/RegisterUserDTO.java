@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import universitySchoolOS.model.enums.Roles;
-import universitySchoolOS.model.enums.UserType;
 
 @Data
 public class RegisterUserDTO {
