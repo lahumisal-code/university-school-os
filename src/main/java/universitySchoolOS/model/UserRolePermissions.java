@@ -22,6 +22,12 @@ public class UserRolePermissions {
     @Column(name = "roles", nullable = false, length = 50)
     private String roles;
 
+    @Column(name = "university_name")
+    private String universityName;
+
+    @Column(name = "college_name")
+    private String collegeName;
+
     @JdbcTypeCode(SqlTypes.ARRAY)
     @Column(name = "permission_id_list", nullable = false)
     private List<Long> permissionIdList = new ArrayList<>();

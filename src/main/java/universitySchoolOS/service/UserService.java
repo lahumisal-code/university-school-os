@@ -88,7 +88,8 @@ public class UserService {
         loginResponse.setRole(rolePermissions.getRoles());
         loginResponse.setUserType(rolePermissions.getUserType());
         loginResponse.setToken(token);
-
+        loginResponse.setUniversityName(rolePermissions.getUniversityName());
+        loginResponse.setCollegeName(rolePermissions.getCollegeName());
         return loginResponse;
     }
 

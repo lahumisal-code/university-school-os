@@ -16,6 +16,9 @@ public class LoginResponse {
     private String role;
     private String userType;
     private String token;
+    private String universityName;
+    private String collegeName;
+
     private List<PermissionDTO> allowedPermissions;
 }
 
