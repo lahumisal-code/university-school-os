@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 import universitySchoolOS.AppConstatnt.AppConstant;
 
 @Slf4j
@@ -28,10 +29,13 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
     private final JwtLogoutHandler jwtLogoutHandler;
+    private final HostVerificationFilter hostVerificationFilter;
+    private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v1/api/auth/login").permitAll()
@@ -43,14 +47,15 @@ public class SecurityConfig {
                         .requestMatchers("/v1/api/university/**").hasAuthority("UNIVERSITY")
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
+                .httpBasic(basic -> basic.disable())
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .addFilterBefore(hostVerificationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout
-                        .logoutUrl("/v1/api/auth/logout")
+                        .logoutUrl(AppConstant.LOGOUT_URL)
                         .addLogoutHandler(jwtLogoutHandler)
                         .logoutSuccessHandler(
                                 (request, response, authentication) -> {

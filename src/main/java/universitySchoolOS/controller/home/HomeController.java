@@ -1,6 +1,8 @@
 package universitySchoolOS.controller.home;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import universitySchoolOS.validationInterfacce.LoginValidationSequence;
 @RequiredArgsConstructor
 public class HomeController {
 
+    private static final Logger log = LoggerFactory.getLogger(HomeController.class);
     private final UserService userService;
 
     @GetMapping
@@ -30,7 +33,7 @@ public class HomeController {
     @PostMapping("/login")
     public LoginResponse login(@Validated(LoginValidationSequence.class) @RequestBody LoginReqDTO loginReqDTO) {
         LoginResponse loginResponse = userService.verifyUser(loginReqDTO);
-
+        log.info("login successfully.....");
         return loginResponse;
 
     }
